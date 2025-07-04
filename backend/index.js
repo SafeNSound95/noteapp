@@ -1,3 +1,5 @@
+// Testing line ending normalization
+
 require('dotenv').config()
 const express = require('express')
 const Note = require('./models/note')
