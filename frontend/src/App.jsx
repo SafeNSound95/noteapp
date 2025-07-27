@@ -10,7 +10,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [username, setUsername] = useState('')   
+  const [username, setUsername] = useState('')      
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -18,6 +18,15 @@ const App = () => {
     noteService.getAll().then(initialNotes => {
       setNotes(initialNotes)
     })
+  }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
   }, [])
 
   const addNote = event => {
@@ -100,9 +109,13 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      ) 
       setUser(user)
       setUsername('')
       setPassword('')
+      noteService.setToken(user.token)
     } catch (exception) {
         setErrorMessage('Wrong credentials')
         setTimeout(() => {
