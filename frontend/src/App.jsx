@@ -10,13 +10,11 @@ import loginService from './services/login'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')      
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [loginVisible, setLoginVisible] = useState(false)
  
   useEffect(() => {
     noteService.getAll().then(initialNotes => {
@@ -33,16 +31,9 @@ const App = () => {
     }
   }, [])
 
-  const addNote = event => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5
-    }
-
+  const addNote = noteObject => { 
     noteService.create(noteObject).then(returnedNote => {
       setNotes(notes.concat(returnedNote))
-      setNewNote('')
     }).catch(error => {
        setErrorMessage(error.response.data.error)
        setTimeout(() => {
@@ -118,9 +109,7 @@ const App = () => {
         <p>{user.name} logged-in</p>
         <Togglable buttonLabel="new note">
           <NoteForm
-            onSubmit = {addNote}
-            handleChange = {handleNoteChange}
-            value = {newNote}
+           createNote = {addNote}
           />
         </Togglable>
       </div>
