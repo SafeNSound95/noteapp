@@ -8,3 +8,5 @@ build
 
 # dotenv files
 .env
+
+coverage/
