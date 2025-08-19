@@ -29,7 +29,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       noteService.setToken(user.token)
-    }
+    } 
   }, [])
 
   const noteFormRef = useRef()    
